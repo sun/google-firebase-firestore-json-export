@@ -6,6 +6,10 @@ subcollections into plain JSON files.
 Uses the built-in `recursive()` flag of the Query class:
 https://cloud.google.com/python/docs/reference/firestore/latest/query#recursive
 
+A single recursive query over a large collection times out on the server.  Each
+collection is therefore split into ranges of 25 top-level documents (including
+all of their subcollections), which are paged through and exported in parallel.
+
 Allows you to analyze the data in your Firestore database locally without being
 constrained to Firestore or BigQuery limitations.  For example:
 
@@ -43,6 +47,11 @@ induce costs for database reads.
 2. Run export to JSON.
     ```console
     $ python3 main.py
+    ```
+
+    To export only some collections, pass their names:
+    ```console
+    $ python3 main.py meals dayplans
     ```
 
 
